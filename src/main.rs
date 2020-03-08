@@ -1,3 +1,5 @@
+use std::io;
+use std::io::prelude::*;
 use structopt::StructOpt;
 
 #[derive(StructOpt)]
@@ -44,7 +46,9 @@ fn main() {
   let opts = Options::from_args();
 
   if opts.input.len() == 0 {
-    println!("Reading from standard input not implemented yet!");
+    for line in io::stdin().lock().lines() {
+      println!("{}", numeronyze_line(opts.delimiter, opts.shortest_string, line.unwrap()));
+    }
   } else {
     println!("{}", numeronyze_line(opts.delimiter, opts.shortest_string, opts.input.join(&opts.delimiter.to_string())));
   }
